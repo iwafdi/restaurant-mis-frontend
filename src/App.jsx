@@ -23,8 +23,10 @@ import MenuManager from "./pages/admin/MenuManager.jsx";
 import TableManager from "./pages/admin/TableManager.jsx";
 import Users from "./pages/admin/Users.jsx";
 import Reports from "./pages/admin/Reports.jsx";
+import HqDashboard from "./pages/hq/Dashboard.jsx";
+import HqBranches from "./pages/hq/Branches.jsx";
 
-const STAFF_MGMT = ["ADMIN", "MANAGER"];
+const STAFF_MGMT = ["ADMIN", "BRANCH_MANAGER"];
 
 export default function App() {
   return (
@@ -114,7 +116,7 @@ export default function App() {
         <Route
           path="/admin/menu"
           element={
-            <ProtectedRoute allow={STAFF_MGMT}>
+            <ProtectedRoute allow={["ADMIN", "BRANCH_MANAGER", "HEADQUARTERS_MANAGER"]}>
               <MenuManager />
             </ProtectedRoute>
           }
@@ -140,6 +142,24 @@ export default function App() {
           element={
             <ProtectedRoute allow={STAFF_MGMT}>
               <Reports />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Headquarters */}
+        <Route
+          path="/hq"
+          element={
+            <ProtectedRoute allow={["HEADQUARTERS_MANAGER", "ADMIN"]}>
+              <HqDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hq/branches"
+          element={
+            <ProtectedRoute allow={["HEADQUARTERS_MANAGER", "ADMIN"]}>
+              <HqBranches />
             </ProtectedRoute>
           }
         />

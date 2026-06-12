@@ -6,7 +6,8 @@ const AuthContext = createContext(null);
 // Where each role lands after logging in.
 export const HOME_BY_ROLE = {
   ADMIN: "/admin",
-  MANAGER: "/admin",
+  HEADQUARTERS_MANAGER: "/hq",
+  BRANCH_MANAGER: "/admin",
   WAITER: "/waiter/tables",
   KITCHEN: "/kitchen",
   CASHIER: "/cashier",

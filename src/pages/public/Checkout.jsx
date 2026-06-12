@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import api from "../../api/axios.js";
 import { useCart } from "../../context/CartContext.jsx";
@@ -12,6 +12,15 @@ export default function Checkout() {
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [branches, setBranches] = useState([]);
+  const [branchId, setBranchId] = useState("");
+
+  useEffect(() => {
+    api.get("/public/branches").then((res) => {
+      setBranches(res.data);
+      if (res.data.length > 0) setBranchId(res.data[0].id);
+    }).catch(() => setBranches([]));
+  }, []);
 
   if (loading) return null;
   // Must be a logged-in customer to place a delivery order.
@@ -26,6 +35,7 @@ export default function Checkout() {
       // 1. Create the delivery order.
       const orderRes = await api.post("/orders", {
         type: "DELIVERY",
+        branchId,
         deliveryAddress: address,
         items: cart.items.map((i) => ({
           menuItemId: i.menuItemId,
@@ -76,6 +86,16 @@ export default function Checkout() {
         onSubmit={placeOrder}
         className="rounded-2xl border border-slate-200 bg-white p-5"
       >
+        <label className="mb-1 block text-sm font-medium text-slate-700">Branch</label>
+        <select
+          value={branchId}
+          onChange={(e) => setBranchId(e.target.value)}
+          className="mb-4 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-orange-500 focus:outline-none"
+        >
+          {branches.map((b) => (
+            <option key={b.id} value={b.id}>{b.name} — {b.city}</option>
+          ))}
+        </select>
         <label className="mb-1 block text-sm font-medium text-slate-700">
           Delivery address
         </label>
@@ -101,7 +121,7 @@ export default function Checkout() {
             Back to cart
           </Link>
           <button
-            disabled={busy}
+            disabled={busy || !branchId}
             className="rounded-lg bg-orange-500 px-6 py-2 font-semibold text-white hover:bg-orange-600 disabled:opacity-60"
           >
             {busy ? "Placing order…" : `Pay ${money(cart.total)} & order`}

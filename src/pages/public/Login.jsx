@@ -4,10 +4,12 @@ import { useAuth, HOME_BY_ROLE } from "../../context/AuthContext.jsx";
 
 const DEMO = [
   ["Admin", "admin@restaurant.es", "Admin@1234"],
-  ["Manager", "manager@restaurant.es", "Manager@1234"],
-  ["Waiter", "waiter@restaurant.es", "Waiter@1234"],
-  ["Cashier", "cashier@restaurant.es", "Cashier@1234"],
-  ["Kitchen", "kitchen@restaurant.es", "Kitchen@1234"],
+  ["HQ Manager", "hq@restaurant.es", "Hq@1234"],
+  ["Manchester Manager", "manager.manchester@restaurant.es", "Manager@1234"],
+  ["London Manager", "manager.london@restaurant.es", "Manager@1234"],
+  ["Manchester Waiter", "waiter.manchester@restaurant.es", "Waiter@1234"],
+  ["Manchester Cashier", "cashier.manchester@restaurant.es", "Cashier@1234"],
+  ["Manchester Kitchen", "kitchen.manchester@restaurant.es", "Kitchen@1234"],
   ["Customer", "customer@restaurant.es", "Customer@1234"],
 ];
 

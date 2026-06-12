@@ -2,20 +2,22 @@ import { useEffect, useState } from "react";
 import api from "../../api/axios.js";
 import { useAuth } from "../../context/AuthContext.jsx";
 
-const ROLES = ["ADMIN", "MANAGER", "WAITER", "CASHIER", "KITCHEN", "CUSTOMER"];
-const EMPTY = { name: "", email: "", password: "", phone: "", role: "WAITER" };
+const ROLES = ["ADMIN", "HEADQUARTERS_MANAGER", "BRANCH_MANAGER", "WAITER", "CASHIER", "KITCHEN", "CUSTOMER"];
+const EMPTY = { name: "", email: "", password: "", phone: "", role: "WAITER", branchId: "" };
 
 export default function Users() {
   const { user: me } = useAuth();
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState(EMPTY);
   const [error, setError] = useState("");
+  const [branches, setBranches] = useState([]);
 
   function load() {
     api.get("/users").then((res) => setUsers(res.data));
   }
   useEffect(() => {
     load();
+    api.get("/branches").then((res) => setBranches(res.data)).catch(() => setBranches([]));
   }, []);
 
   async function createUser(e) {
@@ -57,7 +59,7 @@ export default function Users() {
 
       <form
         onSubmit={createUser}
-        className="mb-6 grid grid-cols-1 gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-2 lg:grid-cols-5"
+        className="mb-6 grid grid-cols-1 gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-2 lg:grid-cols-6"
       >
         <input
           required
@@ -89,6 +91,16 @@ export default function Users() {
         >
           {ROLES.map((r) => (
             <option key={r}>{r}</option>
+          ))}
+        </select>
+        <select
+          value={form.branchId}
+          onChange={(e) => setForm({ ...form, branchId: e.target.value })}
+          className="rounded-lg border border-slate-300 px-3 py-2"
+        >
+          <option value="">No branch (HQ/Admin/Customer)</option>
+          {branches.map((b) => (
+            <option key={b.id} value={b.id}>{b.name}</option>
           ))}
         </select>
         <button className="rounded-lg bg-orange-500 px-4 py-2 font-semibold text-white hover:bg-orange-600">

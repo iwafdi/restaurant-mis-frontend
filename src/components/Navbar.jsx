@@ -12,12 +12,17 @@ const LINKS_BY_ROLE = {
     { to: "/admin/users", label: "Users" },
     { to: "/admin/reports", label: "Reports" },
   ],
-  MANAGER: [
+  BRANCH_MANAGER: [
     { to: "/admin", label: "Dashboard" },
     { to: "/admin/orders", label: "Orders" },
     { to: "/admin/menu", label: "Menu" },
     { to: "/admin/tables", label: "Tables" },
     { to: "/admin/reports", label: "Reports" },
+  ],
+  HEADQUARTERS_MANAGER: [
+    { to: "/hq", label: "HQ Dashboard" },
+    { to: "/hq/branches", label: "Branches" },
+    { to: "/admin/menu", label: "Menu" },
   ],
   WAITER: [
     { to: "/waiter/tables", label: "Tables" },
@@ -57,7 +62,7 @@ export default function Navbar() {
             <NavLink
               key={l.to}
               to={l.to}
-              end={l.to === "/admin"}
+              end={l.to === "/admin" || l.to === "/hq"}
               className={({ isActive }) =>
                 `rounded-md px-3 py-1.5 text-sm font-medium ${
                   isActive
